@@ -38,6 +38,12 @@ const withPWA = withPWAInit({
 });
 
 const nextConfig: NextConfig = {
+  // Static export configuration for GitHub Pages
+  output: 'export',
+  trailingSlash: true,
+  images: {
+    unoptimized: true,
+  },
   // https://github.com/payloadcms/payload/issues/12550#issuecomment-2939070941
   turbopack: {
     root: __dirname,
@@ -57,11 +63,11 @@ const nextConfig: NextConfig = {
     optimizeCss: true,
   },
   // Performance optimizations
-  images: {
-    formats: ['image/webp', 'image/avif'],
-    dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-  },
+  // images: {
+  //   formats: ['image/webp', 'image/avif'],
+  //   dangerouslyAllowSVG: true,
+  //   contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+  // },
   // Compression and caching
   compress: true,
   poweredByHeader: false,
