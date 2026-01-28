@@ -3,7 +3,7 @@ import { isEmpty } from "@/utils/helpers";
 import { TMDB } from "tmdb-ts";
 import { apiCache } from "@/utils/cache";
 
-const token = env.NEXT_PUBLIC_TMDB_ACCESS_TOKEN || "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MmJhZGI0ZGFmODQ3ODZmNTFkYTI4YzIwYTgyNzQ5MyIsIm5iZiI6MTcyOTU4MzQxMS42NzUyODIsInN1YiI6IjY3MTc1ODEwNTBhNmViMGJmYmMyN2I4ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.kxQaEKDqbB2gH5MCNPihPG4kQdZ_0aY8_5PmLzCbiCc";
+const token = env.NEXT_PUBLIC_TMDB_ACCESS_TOKEN || "your_tmdb_access_token_placeholder";
 
 if (isEmpty(token)) {
   throw new Error("NEXT_PUBLIC_TMDB_ACCESS_TOKEN is not defined");
