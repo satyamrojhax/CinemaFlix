@@ -1,0 +1,101 @@
+import type { Metadata, Viewport } from "next";
+import { siteConfig } from "@/config/site";
+import { Poppins } from "@/utils/fonts";
+import "../styles/globals.css";
+import "../styles/lightbox.css";
+import Providers from "./providers";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
+import { cn } from "@/utils/helpers";
+import { IS_PRODUCTION, SpacingClasses } from "@/utils/constants";
+import dynamic from "next/dynamic";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
+import { Suspense } from "react";
+
+// Dynamic imports for better performance
+const TopNavbar = dynamic(() => import("@/components/ui/layout/TopNavbar"));
+const BottomNavbar = dynamic(() => import("@/components/ui/layout/BottomNavbar"));
+const Sidebar = dynamic(() => import("@/components/ui/layout/Sidebar"));
+const InstallPrompt = dynamic(() => import("@/components/ui/overlay/InstallPrompt"));
+
+export const metadata: Metadata = {
+  title: siteConfig.name,
+  applicationName: siteConfig.name,
+  description: siteConfig.description,
+  manifest: "/manifest.json",
+  icons: {
+    icon: siteConfig.favicon,
+    apple: "/icons/ios/192.png",
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: siteConfig.name,
+    startupImage: [
+      {
+        url: "/icons/ios/512.png",
+        media: "(device-width: 768px) and (device-height: 1024px)",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: {
+      default: siteConfig.name,
+      template: `%s | ${siteConfig.name}`,
+    },
+    description: siteConfig.description,
+  },
+  openGraph: {
+    type: "website",
+    siteName: siteConfig.name,
+    title: {
+      default: siteConfig.name,
+      template: `%s | ${siteConfig.name}`,
+    },
+    description: siteConfig.description,
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-status-bar-style": "default",
+    "apple-mobile-web-app-title": siteConfig.name,
+    "msapplication-TileColor": "#0D0C0F",
+    "msapplication-config": "/browserconfig.xml",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#FFFFFF" },
+    { media: "(prefers-color-scheme: dark)", color: "#0D0C0F" },
+  ],
+};
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  return (
+    <html suppressHydrationWarning lang="en">
+      <body className={cn("bg-background min-h-dvh antialiased select-none", Poppins.className)}>
+        <Suspense>
+          <NuqsAdapter>
+            <Providers>
+              <InstallPrompt />
+              <TopNavbar />
+              <Sidebar>
+                <main className={cn("container mx-auto max-w-full", SpacingClasses.main)}>
+                  {children}
+                </main>
+              </Sidebar>
+              <BottomNavbar />
+            </Providers>
+          </NuqsAdapter>
+        </Suspense>
+        <SpeedInsights debug={false} />
+        <Analytics debug={false} />
+      </body>
+    </html>
+  );
+}
